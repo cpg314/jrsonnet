@@ -13,6 +13,17 @@ use jrsonnet_evaluator::{
 use crate::{extvar_source, Settings};
 
 #[builtin]
+pub fn builtin_import_glob(x: IStr) -> Result<Val> {
+	let contents = glob::glob(&x)
+		.unwrap()
+		.filter_map(|p| p.ok())
+		.map(|p| std::fs::read_to_string(&p).map(|x| Val::from(x)))
+		.collect::<Result<Vec<_>, _>>()
+		.unwrap();
+	Ok(Val::Arr(contents.into()))
+}
+
+#[builtin]
 pub fn builtin_length(x: Either![IStr, ArrValue, ObjValue, FuncVal]) -> usize {
 	use Either4::*;
 	match x {

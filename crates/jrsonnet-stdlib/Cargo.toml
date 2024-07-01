@@ -44,6 +44,8 @@ serde_json.workspace = true
 # std.parseYaml, custom library fork is used for C++/golang compatibility
 serde_yaml_with_quirks.workspace = true
 
+glob.workspace = true
+
 num-bigint = { workspace = true, optional = true }
 
 # regex

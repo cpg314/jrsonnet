@@ -55,6 +55,7 @@ pub fn stdlib_uncached(settings: Rc<RefCell<Settings>>) -> ObjValue {
 
 	// FIXME: Use PHF
 	for (name, builtin) in [
+		("importGlob", builtin_import_glob::INST),
 		// Types
 		("type", builtin_type::INST),
 		("isString", builtin_is_string::INST),
