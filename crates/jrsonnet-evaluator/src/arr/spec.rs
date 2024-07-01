@@ -655,15 +655,14 @@ impl ArrayLike for PickObjectKeyValues {
 
 	fn get_lazy(&self, index: usize) -> Option<Thunk<Val>> {
 		let key = self.keys.get(index)?;
-		// Nothing can fail in the key part, yet value is still
-		// lazy-evaluated
-		Some(Thunk::evaluated(
+		Some(
 			KeyValue::into_untyped(KeyValue {
 				key: key.clone(),
 				value: self.obj.get_lazy_or_bail(key.clone()),
 			})
-			.expect("convertible"),
-		))
+			.map(Thunk::evaluated)
+			.unwrap_or_else(Thunk::errored),
+		)
 	}
 
 	fn get_cheap(&self, _index: usize) -> Option<Val> {
